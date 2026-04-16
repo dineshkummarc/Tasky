@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,8 +29,8 @@ fun MyTopAppBar(
     coroutineScope: CoroutineScope,
     drawerState: DrawerState,
     modifier: Modifier,
-    searchText: MutableState<String>,
-    topAppBarColors: TopAppBarDefaults
+    topAppBarColors: TopAppBarDefaults,
+    navigateToSearchScreen: () -> Unit,
 ) {
     TopAppBar(
         navigationIcon = {
@@ -57,7 +58,13 @@ fun MyTopAppBar(
                     text = title,
                     fontSize = 25.sp
                 )
-                SearchBarTop(searchText.value) { searchText.value = it }
+                IconButton(
+                    onClick = {
+                        navigateToSearchScreen()
+                    }
+                ) {
+                    Icon(Icons.Default.Search, contentDescription = "Search")
+                }
             }
         },
         colors = topAppBarColors.topAppBarColors(

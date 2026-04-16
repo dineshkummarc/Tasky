@@ -4,6 +4,7 @@ package com.thatsmanmeet.taskyapp.screens
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -21,6 +22,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.thatsmanmeet.taskyapp.R
 import com.thatsmanmeet.taskyapp.components.MyTopAppBar
@@ -40,7 +44,6 @@ import com.thatsmanmeet.taskyapp.room.deletedtodo.DeletedTodoViewModel
 import com.thatsmanmeet.taskyapp.ui.theme.TaskyTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
@@ -51,11 +54,25 @@ fun MyApp(
     navHostController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val activity = LocalContext.current as Activity
+    val activity = LocalActivity.current as Activity
     val context = LocalContext.current
     createNotificationChannel(context)
-    val todoViewModel = TodoViewModel(activity.application)
-    val deletedTodoViewModel = DeletedTodoViewModel(activity.application)
+    val todoViewModel = viewModel<TodoViewModel>(
+        factory = object : ViewModelProvider.Factory{
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return TodoViewModel(application = activity.application) as T
+            }
+        }
+    )
+
+    val deletedTodoViewModel = viewModel<DeletedTodoViewModel>(
+        factory = object : ViewModelProvider.Factory{
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return DeletedTodoViewModel(activity.application) as T
+            }
+        }
+    )
+
     val listState = rememberLazyListState()
     val selectedItem = rememberSaveable {
         mutableIntStateOf(-1)
@@ -122,7 +139,9 @@ fun MyApp(
             Scaffold(
                 snackbarHost = {SnackbarHost(hostState = snackBarHostState)},
                 topBar = {
-                    MyTopAppBar(title = "Tasky",coroutineScope, drawerState, modifier, searchText, topAppBarColors)
+                    MyTopAppBar(title = "Tasky",coroutineScope, drawerState, modifier, topAppBarColors, navigateToSearchScreen = {
+                        navHostController.navigate(Screen.SearchScreen.route)
+                    })
                 },
                 floatingActionButton = {
                     ExtendedFloatingActionButton(

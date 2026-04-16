@@ -102,7 +102,9 @@ fun NotesScreen(
             Scaffold(
                 snackbarHost = {SnackbarHost(hostState = snackBarHostState)},
                 topBar = {
-                    MyTopAppBar(title = "Notes", coroutineScope, drawerState, modifier, searchText, topAppBarColors)
+                    MyTopAppBar(title = "Notes", coroutineScope, drawerState, modifier,  topAppBarColors, navigateToSearchScreen = {
+                        navHostController.navigate(Screen.SearchScreen.route)
+                    })
                 },
                 floatingActionButton = {
                     ExtendedFloatingActionButton(

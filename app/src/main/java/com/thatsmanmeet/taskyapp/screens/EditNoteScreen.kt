@@ -40,7 +40,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -227,6 +230,7 @@ fun EditNoteScreen(
                     TextField(
                         modifier = modifier.fillMaxWidth(),
                         value = titleText.value!!,
+                        textStyle = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.SemiBold),
                         onValueChange = {
                             isChangeOccur = true
                             titleText.value = it

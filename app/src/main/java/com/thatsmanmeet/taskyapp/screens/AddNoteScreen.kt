@@ -13,7 +13,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,6 +26,7 @@ import com.thatsmanmeet.taskyapp.room.notes.NoteViewModel
 import com.thatsmanmeet.taskyapp.ui.theme.TaskyTheme
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import androidx.compose.ui.text.TextStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -116,6 +119,7 @@ fun AddNoteScreen(
                         modifier = modifier.fillMaxWidth(),
                         value = titleText.value,
                         onValueChange = { titleText.value = it },
+                        textStyle = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.SemiBold),
                         placeholder = { Text(text = "Title") },
                         colors = TextFieldDefaults.colors(
                             unfocusedContainerColor = MaterialTheme.colorScheme.surface,
